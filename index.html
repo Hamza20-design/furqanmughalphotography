@@ -21,6 +21,8 @@
         .booking-card { background: #0a0a0a; border: 1px solid #1a1a1a; transition: all 0.3s ease; position: relative; overflow: hidden; }
         .booking-card:hover { border-color: #ff0000; }
         .section-divider { height: 2px; background: linear-gradient(90deg, #ff0000, transparent); margin-bottom: 2rem; }
+        .card-img { filter: grayscale(100%); transition: filter 0.5s ease; }
+        .booking-card:hover .card-img { filter: grayscale(0%); }
     </style>
 </head>
 <body x-data="shopSystem()">
@@ -32,7 +34,7 @@
             <a href="#portfolio" class="hover:text-red-500 transition">Portfolio</a>
             <button @click="cartOpen = true" class="relative text-white hover:text-red-500">
                 <i class="fa-solid fa-cart-shopping text-xl"></i>
-                <span x-show="cart.length > 0" class="absolute -top-2 -right-2 bg-red-600 text-white text-[10px] rounded-full h-4 w-4 flex items-center justify-center" x-text="cart.length"></span>
+                <span x-show="cart.length > 0" class="absolute -top-2 -right-2 bg-red-600 text-white text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center" x-text="cart.length"></span>
             </button>
         </div>
     </nav>
@@ -57,8 +59,9 @@
             <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
                 <template x-for="item in weddingServices" :key="item.id">
                     <div class="booking-card p-4">
-                        <div class="text-red-600 text-xs font-black mb-2 uppercase" x-text="item.category"></div>
-                        <h4 class="text-sm font-bold text-white mb-4 h-8" x-text="item.name"></h4>
+                        <img :src="item.img" class="card-img w-full aspect-video object-cover mb-4">
+                        <div class="text-red-600 text-[10px] font-black mb-1 uppercase" x-text="item.category"></div>
+                        <h4 class="text-xs font-bold text-white mb-4 h-8" x-text="item.name"></h4>
                         <button @click="addToCart(item)" class="w-full bg-red-600/10 border border-red-600/30 text-red-500 py-2 text-[9px] font-black uppercase hover:bg-red-600 hover:text-white transition">Add to Booking</button>
                     </div>
                 </template>
@@ -71,8 +74,9 @@
             <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
                 <template x-for="item in corporateServices" :key="item.id">
                     <div class="booking-card p-4">
-                        <div class="text-red-600 text-xs font-black mb-2 uppercase" x-text="item.category"></div>
-                        <h4 class="text-sm font-bold text-white mb-4 h-8" x-text="item.name"></h4>
+                        <img :src="item.img" class="card-img w-full aspect-video object-cover mb-4">
+                        <div class="text-red-600 text-[10px] font-black mb-1 uppercase" x-text="item.category"></div>
+                        <h4 class="text-xs font-bold text-white mb-4 h-8" x-text="item.name"></h4>
                         <button @click="addToCart(item)" class="w-full bg-red-600/10 border border-red-600/30 text-red-500 py-2 text-[9px] font-black uppercase hover:bg-red-600 hover:text-white transition">Add to Booking</button>
                     </div>
                 </template>
@@ -85,8 +89,9 @@
             <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
                 <template x-for="item in birthdayServices" :key="item.id">
                     <div class="booking-card p-4">
-                        <div class="text-red-600 text-xs font-black mb-2 uppercase" x-text="item.category"></div>
-                        <h4 class="text-sm font-bold text-white mb-4 h-8" x-text="item.name"></h4>
+                        <img :src="item.img" class="card-img w-full aspect-video object-cover mb-4">
+                        <div class="text-red-600 text-[10px] font-black mb-1 uppercase" x-text="item.category"></div>
+                        <h4 class="text-xs font-bold text-white mb-4 h-8" x-text="item.name"></h4>
                         <button @click="addToCart(item)" class="w-full bg-red-600/10 border border-red-600/30 text-red-500 py-2 text-[9px] font-black uppercase hover:bg-red-600 hover:text-white transition">Add to Booking</button>
                     </div>
                 </template>
@@ -99,8 +104,9 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <template x-for="item in productServices" :key="item.id">
                     <div class="booking-card p-4">
-                        <div class="text-red-600 text-xs font-black mb-2 uppercase" x-text="item.category"></div>
-                        <h4 class="text-sm font-bold text-white mb-4 h-8" x-text="item.name"></h4>
+                        <img :src="item.img" class="card-img w-full aspect-video object-cover mb-4">
+                        <div class="text-red-600 text-[10px] font-black mb-1 uppercase" x-text="item.category"></div>
+                        <h4 class="text-xs font-bold text-white mb-4 h-8" x-text="item.name"></h4>
                         <button @click="addToCart(item)" class="w-full bg-red-600/10 border border-red-600/30 text-red-500 py-2 text-[9px] font-black uppercase hover:bg-red-600 hover:text-white transition">Add to Booking</button>
                     </div>
                 </template>
@@ -129,7 +135,7 @@
     </section>
 
     <div x-show="cartOpen" x-cloak class="fixed inset-0 z-[60]">
-        <div class="absolute inset-0 bg-black/80 backdrop-blur-md" @click="cartOpen = false"></div>
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" @click="cartOpen = false"></div>
         <div class="absolute right-0 top-0 h-full w-full max-w-md bg-black shadow-2xl p-10 overflow-y-auto border-l border-red-900/50">
             <div class="flex justify-between items-center mb-10">
                 <h2 class="text-2xl font-black uppercase text-red-600 italic">Booking Cart</h2>
@@ -166,30 +172,30 @@
                 cart: [],
                 customer: { name: '', phone: '', date: '' },
                 weddingServices: [
-                    { id: 101, category: 'Wedding', name: 'Photography' },
-                    { id: 102, category: 'Wedding', name: 'Cinematography' },
-                    { id: 103, category: 'Wedding', name: 'Dronography' },
-                    { id: 104, category: 'Wedding', name: 'Video and photo editing' },
-                    { id: 105, category: 'Wedding', name: 'Customised photo Albums' }
+                    { id: 101, category: 'Wedding', name: 'Photography', img: '[attachment_3](attachment)' },
+                    { id: 102, category: 'Wedding', name: 'Cinematography', img: '[attachment_4](attachment)' },
+                    { id: 103, category: 'Wedding', name: 'Dronography', img: '[attachment_5](attachment)' },
+                    { id: 104, category: 'Wedding', name: 'Video and photo editing', img: '[attachment_6](attachment)' },
+                    { id: 105, category: 'Wedding', name: 'Customised photo Albums', img: '[attachment_3](attachment)' }
                 ],
                 corporateServices: [
-                    { id: 201, category: 'Corporate', name: 'Photography' },
-                    { id: 202, category: 'Corporate', name: 'Cinematography' },
-                    { id: 203, category: 'Corporate', name: 'Testimonials' },
-                    { id: 204, category: 'Corporate', name: 'Photo Frames' },
-                    { id: 205, category: 'Corporate', name: 'Photo and video editing' }
+                    { id: 201, category: 'Corporate', name: 'Photography', img: '[attachment_11](attachment)' },
+                    { id: 202, category: 'Corporate', name: 'Cinematography', img: '[attachment_12](attachment)' },
+                    { id: 203, category: 'Corporate', name: 'Testimonials', img: '[attachment_13](attachment)' },
+                    { id: 204, category: 'Corporate', name: 'Photo Frames', img: '[attachment_14](attachment)' },
+                    { id: 205, category: 'Corporate', name: 'Photo and video editing', img: '[attachment_11](attachment)' }
                 ],
                 birthdayServices: [
-                    { id: 301, category: 'Birthday', name: 'Photography' },
-                    { id: 302, category: 'Birthday', name: 'Videography' },
-                    { id: 303, category: 'Birthday', name: 'Reels' },
-                    { id: 304, category: 'Birthday', name: 'Photo album' },
-                    { id: 305, category: 'Birthday', name: 'Photo and video editing' }
+                    { id: 301, category: 'Birthday', name: 'Photography', img: '[attachment_7](attachment)' },
+                    { id: 302, category: 'Birthday', name: 'Videography', img: '[attachment_8](attachment)' },
+                    { id: 303, category: 'Birthday', name: 'Reels', img: '[attachment_9](attachment)' },
+                    { id: 304, category: 'Birthday', name: 'Photo album', img: '[attachment_10](attachment)' },
+                    { id: 305, category: 'Birthday', name: 'Photo and video editing', img: '[attachment_7](attachment)' }
                 ],
                 productServices: [
-                    { id: 401, category: 'Product Shooting', name: 'Photography' },
-                    { id: 402, category: 'Product Shooting', name: 'Videography' },
-                    { id: 403, category: 'Product Shooting', name: 'Photo and video editing' }
+                    { id: 401, category: 'Product Shooting', name: 'Photography', img: '[attachment_0](attachment)' },
+                    { id: 402, category: 'Product Shooting', name: 'Videography', img: '[attachment_1](attachment)' },
+                    { id: 403, category: 'Product Shooting', name: 'Photo and video editing', img: '[attachment_2](attachment)' }
                 ],
                 portfolio: [
                     { title: 'The Wedding Edit', category: 'Love', img: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1000', paragraph: 'Cinematic storytelling with a focus on emotional depth and timeless color grading.' },
