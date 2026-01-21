@@ -21,7 +21,7 @@
         .booking-card { background: #0a0a0a; border: 1px solid #1a1a1a; transition: all 0.3s ease; position: relative; overflow: hidden; }
         .booking-card:hover { border-color: #ff0000; }
         .section-divider { height: 2px; background: linear-gradient(90deg, #ff0000, transparent); margin-bottom: 2rem; }
-        .card-img { filter: grayscale(100%); transition: filter 0.5s ease; width: 100%; aspect-ratio: 4/5; object-fit: cover; object-position: center; }
+        .card-img { filter: grayscale(100%); transition: filter 0.5s ease; width: 100%; aspect-ratio: 4/5; object-position: center; }
         .booking-card:hover .card-img { filter: grayscale(0%); }
     </style>
 </head>
@@ -59,7 +59,7 @@
             <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
                 <template x-for="item in weddingServices" :key="item.id">
                     <div class="booking-card p-4">
-                        <img :src="item.img" class="card-img mb-4">
+                        <img :src="item.img" class="card-img object-cover mb-4">
                         <div class="text-red-600 text-[10px] font-black mb-1 uppercase" x-text="item.category"></div>
                         <h4 class="text-xs font-bold text-white mb-4 h-8" x-text="item.name"></h4>
                         <button @click="addToCart(item)" class="w-full bg-red-600/10 border border-red-600/30 text-red-500 py-2 text-[9px] font-black uppercase hover:bg-red-600 hover:text-white transition">Add to Booking</button>
@@ -74,7 +74,7 @@
             <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
                 <template x-for="item in corporateServices" :key="item.id">
                     <div class="booking-card p-4">
-                        <img :src="item.img" class="card-img mb-4">
+                        <img :src="item.img" class="card-img object-cover mb-4">
                         <div class="text-red-600 text-[10px] font-black mb-1 uppercase" x-text="item.category"></div>
                         <h4 class="text-xs font-bold text-white mb-4 h-8" x-text="item.name"></h4>
                         <button @click="addToCart(item)" class="w-full bg-red-600/10 border border-red-600/30 text-red-500 py-2 text-[9px] font-black uppercase hover:bg-red-600 hover:text-white transition">Add to Booking</button>
@@ -89,7 +89,7 @@
             <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
                 <template x-for="item in birthdayServices" :key="item.id">
                     <div class="booking-card p-4">
-                        <img :src="item.img" class="card-img mb-4">
+                        <img :src="item.img" class="card-img object-cover mb-4">
                         <div class="text-red-600 text-[10px] font-black mb-1 uppercase" x-text="item.category"></div>
                         <h4 class="text-xs font-bold text-white mb-4 h-8" x-text="item.name"></h4>
                         <button @click="addToCart(item)" class="w-full bg-red-600/10 border border-red-600/30 text-red-500 py-2 text-[9px] font-black uppercase hover:bg-red-600 hover:text-white transition">Add to Booking</button>
@@ -104,7 +104,7 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <template x-for="item in productServices" :key="item.id">
                     <div class="booking-card p-4">
-                        <img :src="item.img" class="card-img mb-4">
+                        <img :src="item.img" class="card-img object-cover mb-4">
                         <div class="text-red-600 text-[10px] font-black mb-1 uppercase" x-text="item.category"></div>
                         <h4 class="text-xs font-bold text-white mb-4 h-8" x-text="item.name"></h4>
                         <button @click="addToCart(item)" class="w-full bg-red-600/10 border border-red-600/30 text-red-500 py-2 text-[9px] font-black uppercase hover:bg-red-600 hover:text-white transition">Add to Booking</button>
@@ -172,35 +172,35 @@
                 cart: [],
                 customer: { name: '', phone: '', date: '' },
                 weddingServices: [
-                    { id: 101, category: 'Wedding', name: 'Photography', img: 'Image 200317=FMStudio.jpg' },
+                    { id: 101, category: 'Wedding', name: 'Photography', img: 'IMG_9584-FMStudio.jpg' },
                     { id: 102, category: 'Wedding', name: 'Cinematography', img: 'IMG_9584-FMStudio.jpg' },
                     { id: 103, category: 'Wedding', name: 'Dronography', img: 'IMG_9584-FMStudio.jpg' },
                     { id: 104, category: 'Wedding', name: 'Video and photo editing', img: 'IMG_9584-FMStudio.jpg' },
                     { id: 105, category: 'Wedding', name: 'Customised photo Albums', img: 'IMG_9584-FMStudio.jpg' }
                 ],
                 corporateServices: [
-                    { id: 201, category: 'Corporate', name: 'Photography', img: 'IMG_6994 FM Studio.jpg' },
-                    { id: 202, category: 'Corporate', name: 'Cinematography', img: 'IMG_6987.jpg' },
-                    { id: 203, category: 'Corporate', name: 'Testimonials', img: 'corporate-event-1920-x-1297-wallpaper-x7gy15bpw9cgx0pb.jpg' },
-                    { id: 204, category: 'Corporate', name: 'Photo Frames', img: 'IMG_7037 FMSTUDIO.jpg' },
-                    { id: 205, category: 'Corporate', name: 'Photo and video editing', img: '1_693.jpg' }
+                    { id: 201, category: 'Corporate', name: 'Photography', img: 'corporate_photography.jpg' },
+                    { id: 202, category: 'Corporate', name: 'Cinematography', img: 'corporate_cinematography.jpg' },
+                    { id: 203, category: 'Corporate', name: 'Testimonials', img: 'corporate_testimonial.jpg' },
+                    { id: 204, category: 'Corporate', name: 'Photo Frames', img: 'corporate_photoframe.jpg' },
+                    { id: 205, category: 'Corporate', name: 'Photo and video editing', img: 'corporate_photoediting.jpg' }
                 ],
                 birthdayServices: [
-                    { id: 301, category: 'Birthday', name: 'Photography', img: 'XY2A6560.JPG' },
-                    { id: 302, category: 'Birthday', name: 'Videography', img: 'XY2A6567.JPG' },
-                    { id: 303, category: 'Birthday', name: 'Reels', img: 'DSC05305.JPG' },
+                    { id: 301, category: 'Birthday', name: 'Photography', img: 'DSC05289.JPG' },
+                    { id: 302, category: 'Birthday', name: 'Videography', img: 'DSC05289.JPG' },
+                    { id: 303, category: 'Birthday', name: 'Reels', img: 'DSC05289.JPG' },
                     { id: 304, category: 'Birthday', name: 'Photo album', img: 'DSC05289.JPG' },
                     { id: 305, category: 'Birthday', name: 'Photo and video editing', img: 'DSC05289.JPG' }
                 ],
                 productServices: [
-                    { id: 401, category: 'Product Shooting', name: 'Photography', img: 'A9C2D85F-072D-49A3-959F-367152F0EEA8.JPG' },
-                    { id: 402, category: 'Product Shooting', name: 'Videography', img: 'IMG_7345.JPG' },
-                    { id: 403, category: 'Product Shooting', name: 'Editing', img: '0822B9BE-2DF3-4407-BBFC-98629E9EFA6A.JPG' }
+                    { id: 401, category: 'Product Shooting', name: 'Photography', img: '0822B9BE-2DF3-4407-BBFC-98629E9EFA6A.JPG' },
+                    { id: 402, category: 'Product Shooting', name: 'Videography', img: '0822B9BE-2DF3-4407-BBFC-98629E9EFA6A.JPG' },
+                    { id: 403, category: 'Product Shooting', name: 'Photo and video editing', img: '0822B9BE-2DF3-4407-BBFC-98629E9EFA6A.JPG' }
                 ],
                 portfolio: [
-                    { title: 'The Wedding Edit', category: 'Love', img: 'Image 200317=FMStudio.jpg', paragraph: 'Cinematic storytelling with a focus on emotional depth and timeless color grading.' },
-                    { title: 'Commercial Edge', category: 'Product', img: 'A9C2D85F-072D-49A3-959F-367152F0EEA8.JPG', paragraph: 'Sharp, clean visuals designed to sell the experience behind every product.' },
-                    { title: 'Events & Beyond', category: 'Corporate', img: 'corporate-event-1920-x-1297-wallpaper-x7gy15bpw9cgx0pb.jpg', paragraph: 'Capturing the grand scale and intimate details of high-profile corporate gatherings.' }
+                    { title: 'The Wedding Edit', category: 'Love', img: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1000', paragraph: 'Cinematic storytelling with a focus on emotional depth and timeless color grading.' },
+                    { title: 'Action Dynamics', category: 'Sports', img: 'https://images.unsplash.com/photo-1504450758481-7338eba7524a?auto=format&fit=crop&w=1000', paragraph: 'Freezing moments of peak performance with high-speed precision and clarity.' },
+                    { title: 'Commercial Edge', category: 'Product', img: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=1000', paragraph: 'Sharp, clean visuals designed to sell the experience behind every product.' }
                 ],
                 addToCart(item) { this.cart.push(item); this.cartOpen = true; },
                 removeFromCart(index) { this.cart.splice(index, 1); },
