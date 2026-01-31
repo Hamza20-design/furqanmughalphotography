@@ -13,11 +13,27 @@
         html { overflow-y: scroll; scroll-behavior: smooth; }
         body { background-color: #000; color: #fff; font-family: 'Montserrat', sans-serif; margin: 0; overflow-x: hidden; }
         h1, h2, h3 { font-family: 'Oswald', sans-serif; text-transform: uppercase; }
-        .hero-bg {
-            background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.95)), 
-                        url('https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=1920&q=80');
-            background-size: cover; background-position: center; background-attachment: fixed;
+        
+        /* Category Box Styling */
+        .category-card { 
+            position: relative; 
+            height: 450px; 
+            overflow: hidden; 
+            display: flex; 
+            align-items: flex-end; 
+            padding: 2rem;
+            border: 1px solid #1a1a1a;
+            transition: all 0.5s ease;
         }
+        .category-card img { 
+            position: absolute; inset: 0; width: 100%; height: 100%; 
+            object-cover: cover; z-index: 1; filter: grayscale(100%) brightness(0.4); 
+            transition: all 0.6s ease;
+        }
+        .category-card:hover img { filter: grayscale(0%) brightness(0.6); transform: scale(1.05); }
+        .category-card:hover { border-color: #ff0000; }
+        .category-content { z-index: 2; position: relative; width: 100%; }
+
         .booking-row { border-bottom: 1px solid #1a1a1a; transition: all 0.3s ease; }
         .booking-row:hover { background: #0a0a0a; border-left: 4px solid #ff0000; }
         .section-divider { height: 2px; background: linear-gradient(90deg, #ff0000, transparent); margin-bottom: 2rem; }
@@ -37,60 +53,85 @@
     </nav>
 
     <div x-show="currentPage === 'home'">
-        <header class="hero-bg min-h-screen flex items-center justify-center text-center relative">
-            <div class="max-w-7xl mx-auto px-6 relative z-10">
-                <span class="text-red-600 uppercase tracking-[0.6em] text-xs font-bold block mb-4">The Premium Experience</span>
-                <h1 class="text-6xl md:text-8xl font-black text-white mb-4 italic tracking-tighter">WEDDING PHOTOGRAPHY</h1>
-                <h2 class="text-3xl md:text-4xl font-light text-zinc-400 mb-12 tracking-widest">& VIDEOGRAPHY</h2>
-                
-                <button @click="currentPage = 'bookings'" class="bg-red-600 text-white px-12 py-5 uppercase text-xs font-black tracking-widest hover:bg-white hover:text-black transition transform hover:scale-105">
-                    View All Services & Bookings
-                </button>
+        <section class="py-20 px-6 max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <span class="text-red-600 uppercase tracking-[0.5em] text-[10px] font-bold">Elite Visuals</span>
+                <h2 class="text-5xl font-black italic mt-2">OUR <span class="text-red-600">EXPERTISE</span></h2>
             </div>
-        </header>
 
-        <section class="py-24 bg-black">
-            <div class="max-w-7xl mx-auto px-6">
-                <h2 class="text-4xl font-black mb-16 italic tracking-tighter text-center">WEDDING <span class="text-red-600">SHOWCASE</span></h2>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center mb-32">
-                    <img src="wedding1.jpg" class="w-full grayscale hover:grayscale-0 transition duration-700 border-l-4 border-red-600 shadow-2xl">
-                    <div>
-                        <h3 class="text-3xl font-black text-white mb-6 italic">Capturing Pure Emotion</h3>
-                        <p class="text-zinc-400 leading-relaxed font-light">Every glance, every tear, and every smile tells a story. We specialize in cinematic wedding coverage that preserves your most precious moments in high-definition timelessness.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="category-card">
+                    <img src="wedding_photography.jpg" alt="Wedding">
+                    <div class="category-content">
+                        <h3 class="text-2xl font-black mb-4 italic">Wedding</h3>
+                        <button @click="currentPage = 'bookings'" class="bg-red-600 text-white px-6 py-2 text-[10px] font-black uppercase tracking-widest hover:bg-white hover:text-black transition">View Services</button>
                     </div>
                 </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center flex-row-reverse">
-                    <div class="order-2 md:order-1 text-right">
-                        <h3 class="text-3xl font-black text-white mb-6 italic">Grandeur & Elegance</h3>
-                        <p class="text-zinc-400 leading-relaxed font-light">From the majestic drone shots of your venue to the intimate details of your attire, our lens captures the grandeur of your big day with an elite artistic touch.</p>
+                <div class="category-card">
+                    <img src="corporate_photography.jpg" alt="Corporate">
+                    <div class="category-content">
+                        <h3 class="text-2xl font-black mb-4 italic">Corporate</h3>
+                        <button @click="currentPage = 'bookings'" class="bg-red-600 text-white px-6 py-2 text-[10px] font-black uppercase tracking-widest hover:bg-white hover:text-black transition">View Services</button>
                     </div>
-                    <img src="wedding2.jpg" class="order-1 md:order-2 w-full grayscale hover:grayscale-0 transition duration-700 border-r-4 border-red-600 shadow-2xl">
+                </div>
+                <div class="category-card">
+                    <img src="birthday1.JPG" alt="Birthday">
+                    <div class="category-content">
+                        <h3 class="text-2xl font-black mb-4 italic">Birthday</h3>
+                        <button @click="currentPage = 'bookings'" class="bg-red-600 text-white px-6 py-2 text-[10px] font-black uppercase tracking-widest hover:bg-white hover:text-black transition">View Services</button>
+                    </div>
+                </div>
+                <div class="category-card">
+                    <img src="product1.JPG" alt="Product">
+                    <div class="category-content">
+                        <h3 class="text-2xl font-black mb-4 italic">Product</h3>
+                        <button @click="currentPage = 'bookings'" class="bg-red-600 text-white px-6 py-2 text-[10px] font-black uppercase tracking-widest hover:bg-white hover:text-black transition">View Services</button>
+                    </div>
                 </div>
             </div>
         </section>
     </div>
 
     <div x-show="currentPage === 'bookings'" x-cloak class="min-h-screen bg-black py-20 px-6">
-        <div class="max-w-4xl mx-auto">
-            <button @click="currentPage = 'home'" class="text-red-600 text-xs font-bold uppercase mb-8 hover:text-white">← Back to Home</button>
-            <h2 class="text-5xl font-black mb-16 italic uppercase">Service <span class="text-red-600">Menu</span></h2>
-
-            <template x-for="category in ['Wedding', 'Corporate', 'Birthday', 'Product Shooting']" :key="category">
-                <div class="mb-16">
-                    <h3 class="text-2xl font-bold text-white mb-4 uppercase tracking-tighter" x-text="category"></h3>
-                    <div class="section-divider w-32"></div>
-                    <div class="space-y-2">
-                        <template x-for="item in getAllServices().filter(s => s.category === category)" :key="item.id">
-                            <div class="booking-row flex justify-between items-center py-4 px-2">
-                                <span class="text-zinc-300 font-medium uppercase text-sm" x-text="item.name"></span>
-                                <button @click="addToCart(item)" class="text-[10px] font-black text-red-600 hover:text-white uppercase tracking-widest">+ Add to Cart</button>
-                            </div>
-                        </template>
+        <div class="max-w-5xl mx-auto">
+            <button @click="currentPage = 'home'" class="text-red-600 text-[10px] font-black uppercase mb-12 tracking-widest hover:text-white">← Back to Home</button>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 mb-32">
+                <template x-for="cat in ['Wedding', 'Corporate', 'Birthday', 'Product Shooting']" :key="cat">
+                    <div>
+                        <h3 class="text-xl font-black text-white mb-2 uppercase italic tracking-tighter" x-text="cat"></h3>
+                        <div class="section-divider w-24"></div>
+                        <div class="space-y-1">
+                            <template x-for="item in getAllServices().filter(s => s.category === cat)" :key="item.id">
+                                <div class="booking-row flex justify-between items-center py-3 px-2">
+                                    <span class="text-zinc-400 font-bold uppercase text-[11px] tracking-wide" x-text="item.name"></span>
+                                    <button @click="addToCart(item)" class="text-[9px] font-black text-red-600 hover:text-white uppercase tracking-tighter">+ Add</button>
+                                </div>
+                            </template>
+                        </div>
                     </div>
-                </div>
-            </template>
+                </template>
+            </div>
+
+            <div class="border-t border-zinc-900 pt-32">
+                <h2 class="text-4xl font-black text-center mb-24 italic tracking-tighter">FEATURED <span class="text-red-600">WORK</span></h2>
+                
+                <div class="space-y-40">
+                    <div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                            <img src="wedding_photography.jpg" class="aspect-[4/5] object-cover grayscale hover:grayscale-0 transition duration-500">
+                            <img src="wedding_cinematography.jpg" class="aspect-[4/5] object-cover grayscale hover:grayscale-0 transition duration-500">
+                            <img src="wedding_dronography.jpg" class="aspect-[4/5] object-cover grayscale hover:grayscale-0 transition duration-500">
+                        </div>
+                        <h3 class="text-xl font-bold text-red-600 italic uppercase">Wedding Excellence</h3>
+                        <p class="text-zinc-500 text-sm mt-2 leading-relaxed font-medium uppercase tracking-widest">
+                            Cinematic storytelling that captures the soul of your union. <br>
+                            From intimate moments to grand celebrations, we frame eternity.
+                        </p>
+                    </div>
+
+                    </div>
+            </div>
         </div>
     </div>
 
