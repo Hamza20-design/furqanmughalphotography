@@ -14,43 +14,49 @@
         body { background-color: #000; color: #fff; font-family: 'Montserrat', sans-serif; overflow-x: hidden; }
         h1, h2, h3 { font-family: 'Oswald', sans-serif; text-transform: uppercase; }
         
-        /* Hero Background Styling */
-        .hero-section {
-            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.9)), 
-                        url('https://images.unsplash.com/photo-1452723312111-3a7d0db0e024?auto=format&fit=crop&w=1920&q=80');
+        /* Background restricted ONLY to the Hero Heading area */
+        .hero-bg-box {
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.8)), 
+                        url('https://images.unsplash.com/photo-1554048612-b6a482bc67e5?q=80&w=1920&auto=format&fit=crop');
             background-size: cover;
             background-position: center;
-            background-attachment: fixed;
+            border-radius: 4px;
+            padding: 100px 20px;
+            border: 1px solid #222;
         }
 
         .glass { background: rgba(15, 15, 15, 0.7); backdrop-filter: blur(15px); border: 1px solid #222; }
         
-        /* Modern Category Card */
         .category-card {
             position: relative;
             height: 450px;
-            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            transition: all 0.5s ease;
             cursor: pointer;
             border: 1px solid #1a1a1a;
             overflow: hidden;
         }
-        .category-card:hover { border-color: #ff0000; transform: translateY(-10px); }
-        .category-card img { transition: transform 0.8s ease; filter: brightness(0.5) grayscale(30%); }
-        .category-card:hover img { transform: scale(1.1); filter: brightness(0.3) grayscale(0%); }
+        .category-card:hover { border-color: #ff0000; transform: translateY(-5px); }
+        .category-card img { transition: 0.8s ease; filter: brightness(0.5); }
+        .category-card:hover img { transform: scale(1.1); filter: brightness(0.3); }
 
-        /* Work Showcase Animation */
-        .work-img {
-            transition: all 0.5s ease;
-            filter: grayscale(100%);
-            transform: scale(0.95);
+        /* Showcase Image Animations */
+        .showcase-container { overflow: hidden; position: relative; }
+        .showcase-img {
+            transition: all 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+            transform: translateY(100px) scale(1.2);
             opacity: 0;
+            filter: grayscale(100%) brightness(0.5);
         }
-        .show-work {
-            filter: grayscale(0%);
-            transform: scale(1);
+        .showcase-active {
+            transform: translateY(0) scale(1);
             opacity: 1;
+            filter: grayscale(0%) brightness(1);
         }
-        .work-img:hover { transform: translateY(-5px) scale(1.02); box-shadow: 0 10px 20px rgba(255,0,0,0.2); }
+        .showcase-img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.4);
+            z-index: 10;
+        }
     </style>
 </head>
 <body x-data="shopSystem()">
@@ -60,118 +66,95 @@
             FM <span class="text-red-600">STUDIOS</span>
         </div>
         <div class="flex items-center gap-8 text-[10px] font-bold uppercase tracking-widest">
-            <button @click="currentPage = 'home'" :class="currentPage === 'home' ? 'text-red-600' : 'text-white'" class="hover:text-red-500 transition">Home</button>
-            <button @click="cartOpen = true" class="relative text-white hover:text-red-500 transition">
+            <button @click="currentPage = 'home'" :class="currentPage === 'home' ? 'text-red-600' : 'text-white'">Home</button>
+            <button @click="cartOpen = true" class="relative text-white">
                 <i class="fa-solid fa-cart-shopping text-xl"></i>
                 <span x-show="cart.length > 0" class="absolute -top-2 -right-2 bg-red-600 text-white rounded-full h-4 w-4 flex items-center justify-center text-[8px]" x-text="cart.length"></span>
             </button>
         </div>
     </nav>
 
-    <main x-show="currentPage === 'home'" x-transition:enter="transition duration-500" x-transition:enter-start="opacity-0">
-        <header class="hero-section min-h-screen flex flex-col justify-center items-center text-center px-6">
-            <div class="max-w-7xl w-full">
-                <span class="text-red-600 uppercase tracking-[0.8em] text-xs font-bold mb-4 block animate-pulse">The Elite Standard</span>
-                <h1 class="text-6xl md:text-8xl font-black italic mb-16 tracking-tighter">SELECT YOUR <span class="text-red-600">VISION</span></h1>
-                
-                <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
-                    <template x-for="(label, cat) in categories" :key="cat">
-                        <div @click="openCategory(cat)" class="category-card group">
-                            <img :src="categoryImages[cat]" class="w-full h-full object-cover">
-                            <div class="absolute inset-0 flex flex-col justify-end p-8 text-left bg-gradient-to-t from-black via-transparent">
-                                <h3 class="text-2xl font-black leading-tight mb-2" x-text="label"></h3>
-                                <div class="h-1 w-12 bg-red-600 mb-4 transform origin-left transition-transform scale-x-0 group-hover:scale-x-100 duration-500"></div>
-                                <span class="text-[9px] opacity-60 tracking-[0.3em] uppercase">Enter Gallery</span>
-                            </div>
+    <main x-show="currentPage === 'home'" x-transition:enter="transition duration-500">
+        <div class="max-w-7xl mx-auto px-6 py-12">
+            <header class="hero-bg-box text-center mb-16">
+                <span class="text-red-600 uppercase tracking-[0.8em] text-xs font-bold block mb-4">The Elite Standard</span>
+                <h1 class="text-5xl md:text-8xl font-black italic tracking-tighter">SELECT YOUR <span class="text-red-600">VISION</span></h1>
+            </header>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                <template x-for="(label, cat) in categories" :key="cat">
+                    <div @click="openCategory(cat)" class="category-card group">
+                        <img :src="categoryImages[cat]" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 flex flex-col justify-end p-8 bg-gradient-to-t from-black">
+                            <h3 class="text-2xl font-black leading-tight" x-text="label"></h3>
+                            <div class="h-1 w-0 group-hover:w-12 bg-red-600 transition-all duration-500 mt-2"></div>
                         </div>
-                    </template>
-                </div>
+                    </div>
+                </template>
             </div>
-        </header>
+        </div>
     </main>
 
-    <section x-show="currentPage === 'services'" x-cloak x-transition class="min-h-screen py-20 px-6 bg-zinc-950">
+    <section x-show="currentPage === 'services'" x-cloak class="min-h-screen py-20 px-6 bg-black">
         <div class="max-w-5xl mx-auto">
-            <div class="flex items-center justify-between mb-16">
-                <div class="flex items-center gap-6">
-                    <button @click="currentPage = 'home'" class="h-12 w-12 rounded-full border border-white/10 flex items-center justify-center hover:bg-red-600 hover:border-red-600 transition">
-                        <i class="fa-solid fa-arrow-left"></i>
-                    </button>
-                    <h2 class="text-4xl md:text-5xl font-black italic uppercase tracking-tighter" x-text="categories[activeCategory]"></h2>
-                </div>
-                <div class="h-[2px] flex-1 bg-gradient-to-r from-red-600 to-transparent ml-8 hidden md:block"></div>
+            <div class="flex items-center gap-6 mb-12">
+                <button @click="currentPage = 'home'" class="h-12 w-12 rounded-full border border-white/10 flex items-center justify-center hover:bg-red-600 transition">
+                    <i class="fa-solid fa-arrow-left text-sm"></i>
+                </button>
+                <h2 class="text-4xl font-black italic uppercase tracking-tighter" x-text="categories[activeCategory]"></h2>
             </div>
 
-            <div class="grid gap-4 mb-20">
+            <div class="grid gap-4 mb-24">
                 <template x-for="item in filteredServices()" :key="item.name">
-                    <div @click="addToCart(item)" class="glass p-8 flex justify-between items-center group cursor-pointer hover:border-red-600/50 transition-all duration-300">
-                        <div>
-                            <h4 class="font-bold uppercase tracking-[0.2em] text-sm group-hover:text-red-500 transition" x-text="item.name"></h4>
-                            <p class="text-[10px] text-zinc-500 uppercase mt-1 tracking-widest">Premium Service Tier</p>
-                        </div>
-                        <div class="flex items-center gap-4">
-                            <span class="text-[9px] uppercase font-bold opacity-0 group-hover:opacity-100 transition tracking-tighter">Add to Booking</span>
-                            <div class="h-10 w-10 rounded-full border border-zinc-800 flex items-center justify-center group-hover:bg-red-600 group-hover:border-red-600 transition">
-                                <i class="fa-solid fa-plus text-xs"></i>
-                            </div>
+                    <div @click="addToCart(item)" class="glass p-8 flex justify-between items-center group cursor-pointer hover:border-red-600 transition">
+                        <h4 class="font-bold uppercase tracking-widest text-sm" x-text="item.name"></h4>
+                        <div class="h-10 w-10 rounded-full border border-zinc-800 flex items-center justify-center group-hover:bg-red-600 transition">
+                            <i class="fa-solid fa-plus text-xs"></i>
                         </div>
                     </div>
                 </template>
             </div>
 
-            <div class="mt-24">
-                <div class="text-center mb-12">
-                    <h3 class="text-xl font-bold italic tracking-[0.4em] text-red-600">Our Recent Work</h3>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <template x-for="n in [1,2,3]" :key="n">
-                        <div class="aspect-[4/5] overflow-hidden border border-zinc-800">
-                            <img 
-                                :src="`https://images.unsplash.com/photo-1542038784456-1ea8e935640e?q=80&w=800&auto=format&fit=crop`" 
-                                class="work-img w-full h-full object-cover show-work"
-                                :style="`transition-delay: ${n * 150}ms`"
-                            >
-                        </div>
-                    </template>
-                </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <template x-for="n in [1,2,3]" :key="n">
+                    <div class="showcase-container aspect-[3/4] border border-white/5">
+                        <img 
+                            :src="`https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=800&q=80`" 
+                            class="showcase-img w-full h-full object-cover"
+                            :class="currentPage === 'services' ? 'showcase-active' : ''"
+                            :style="`transition-delay: ${n * 200}ms`"
+                        >
+                    </div>
+                </template>
             </div>
         </div>
     </section>
 
     <div x-show="cartOpen" x-cloak class="fixed inset-0 z-[60]">
-        <div class="absolute inset-0 bg-black/90 backdrop-blur-md" @click="cartOpen = false"></div>
-        <div class="absolute right-0 top-0 h-full w-full max-w-md bg-zinc-950 p-10 border-l border-red-900/30 overflow-y-auto">
+        <div class="absolute inset-0 bg-black/95" @click="cartOpen = false"></div>
+        <div class="absolute right-0 top-0 h-full w-full max-w-md bg-zinc-950 p-10 border-l border-red-900/40">
             <div class="flex justify-between items-center mb-10">
-                <button @click="cartOpen = false" class="text-zinc-500 hover:text-white text-xs font-bold uppercase tracking-widest flex items-center gap-2">
-                    <i class="fa-solid fa-chevron-left"></i> Back to Services
+                <button @click="cartOpen = false" class="text-zinc-500 hover:text-white text-[10px] font-bold uppercase tracking-[0.3em]">
+                    <i class="fa-solid fa-arrow-left mr-2"></i> Back to Services
                 </button>
-                <h2 class="text-2xl font-black uppercase text-red-600 italic">Cart</h2>
+                <h2 class="text-2xl font-black uppercase text-red-600 italic">Booking</h2>
             </div>
             
             <div class="space-y-6 mb-12">
                 <template x-for="(item, index) in cart" :key="index">
-                    <div class="flex justify-between items-start border-b border-white/5 pb-6">
-                        <div>
-                            <p class="font-bold text-sm uppercase tracking-wider" x-text="item.name"></p>
-                            <p class="text-[9px] text-red-600 uppercase font-black mt-1" x-text="item.catLabel"></p>
-                        </div>
-                        <button @click="removeFromCart(index)" class="text-zinc-600 hover:text-red-500 transition-colors"><i class="fa-solid fa-trash-can text-xs"></i></button>
+                    <div class="flex justify-between items-center border-b border-white/5 pb-4">
+                        <p class="font-bold text-xs uppercase" x-text="item.name"></p>
+                        <button @click="removeFromCart(index)" class="text-red-600 text-[10px] font-black uppercase">Remove</button>
                     </div>
                 </template>
-                <div x-show="cart.length === 0" class="text-center py-20 text-zinc-700 font-bold uppercase tracking-[0.3em] text-[10px]">Your Selection is Empty</div>
             </div>
 
             <div x-show="cart.length > 0" class="space-y-4">
-                <div class="grid grid-cols-1 gap-4">
-                    <div class="space-y-1">
-                        <label class="text-[9px] font-bold text-zinc-500 uppercase tracking-widest ml-1">Event Date</label>
-                        <input type="datetime-local" x-model="customer.date" class="w-full bg-black border border-zinc-800 p-4 text-xs text-white focus:border-red-600 outline-none">
-                    </div>
-                    <input type="text" x-model="customer.name" placeholder="FULL NAME" class="w-full bg-black border border-zinc-800 p-4 text-xs text-white focus:border-red-600 outline-none">
-                    <input type="tel" x-model="customer.phone" placeholder="PHONE NUMBER" class="w-full bg-black border border-zinc-800 p-4 text-xs text-white focus:border-red-600 outline-none">
-                </div>
-                <button @click="sendToWhatsApp()" class="w-full bg-red-600 text-white py-5 font-black uppercase text-xs tracking-[0.3em] hover:bg-white hover:text-black transition-all duration-500 shadow-xl shadow-red-900/10">
-                    Confirm via WhatsApp
+                <input type="datetime-local" x-model="customer.date" class="w-full bg-black border border-zinc-800 p-4 text-xs text-white">
+                <input type="text" x-model="customer.name" placeholder="YOUR NAME" class="w-full bg-black border border-zinc-800 p-4 text-xs text-white">
+                <input type="tel" x-model="customer.phone" placeholder="PHONE NUMBER" class="w-full bg-black border border-zinc-800 p-4 text-xs text-white">
+                <button @click="sendToWhatsApp()" class="w-full bg-red-600 text-white py-5 font-black uppercase text-xs tracking-widest hover:bg-white hover:text-black transition-all">
+                    Send to WhatsApp
                 </button>
             </div>
         </div>
@@ -195,11 +178,11 @@
                 },
 
                 categoryImages: {
-                    wedding: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80',
-                    premier: 'https://images.unsplash.com/photo-1514525253361-bee8a18744ad?auto=format&fit=crop&w=800&q=80',
-                    product: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=800&q=80',
-                    corporate: 'https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=800&q=80',
-                    birthday: 'https://images.unsplash.com/photo-1530103043960-ef38714abb15?auto=format&fit=crop&w=800&q=80'
+                    wedding: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=800&q=80',
+                    premier: 'https://images.unsplash.com/photo-1493225255756-d9584f8606e9?auto=format&fit=crop&w=800&q=80',
+                    product: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=800&q=80',
+                    corporate: 'https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=800&q=80',
+                    birthday: 'https://images.unsplash.com/photo-1464349153735-7db50ed83c84?auto=format&fit=crop&w=800&q=80'
                 },
 
                 services: [
@@ -243,17 +226,11 @@
 
                 sendToWhatsApp() {
                     if(!this.customer.name || !this.customer.phone) {
-                        alert("Please provide contact details.");
+                        alert("Please fill details.");
                         return;
                     }
                     const items = this.cart.map(i => `• ${i.name} [${this.categories[i.category]}]`).join('\n');
-                    const msg = encodeURIComponent(
-                        `*NEW BOOKING REQUEST - FM STUDIOS*\n\n` +
-                        `*Client:* ${this.customer.name}\n` +
-                        `*Contact:* ${this.customer.phone}\n` +
-                        `*Date:* ${this.customer.date}\n\n` +
-                        `*Requested Services:*\n${items}`
-                    );
+                    const msg = encodeURIComponent(`*FM STUDIOS*\n\nName: ${this.customer.name}\nPhone: ${this.customer.phone}\nDate: ${this.customer.date}\n\nServices:\n${items}`);
                     window.open(`https://wa.me/923352571915?text=${msg}`, '_blank');
                 }
             }
