@@ -14,14 +14,13 @@
         body { background-color: #000; color: #fff; font-family: 'Montserrat', sans-serif; overflow-x: hidden; }
         h1, h2, h3 { font-family: 'Oswald', sans-serif; text-transform: uppercase; }
         
-        /* Full width header background with photographer theme */
         .hero-full-width {
-            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.9)), 
-                        url('https://images.unsplash.com/photo-1554048612-b6a482bc67e5?q=80&w=1920&auto=format&fit=crop');
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.9)), 
+                        url('https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?q=80&w=2070&auto=format&fit=crop');
             background-size: cover;
             background-position: center;
             width: 100%;
-            padding: 120px 0;
+            padding: 140px 0;
             border-bottom: 1px solid #1a1a1a;
         }
 
@@ -29,31 +28,25 @@
         
         .category-card {
             position: relative;
-            height: 450px;
+            height: 500px;
             transition: all 0.5s ease;
             cursor: pointer;
             border: 1px solid #1a1a1a;
             overflow: hidden;
         }
-        .category-card:hover { border-color: #ff0000; transform: translateY(-5px); }
-        .category-card img { transition: 0.8s ease; filter: brightness(0.5); }
-        .category-card:hover img { transform: scale(1.1); filter: brightness(0.3); }
+        .category-card:hover { border-color: #ff0000; transform: translateY(-10px); }
+        .category-card img { transition: 0.8s ease; filter: brightness(0.6); }
+        .category-card:hover img { transform: scale(1.1); filter: brightness(0.4); }
 
-        /* Showcase Image Animations */
         .showcase-container { overflow: hidden; position: relative; border: 1px solid #1a1a1a; background: #111; }
         .showcase-img {
             transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
-            transform: translateY(120px) scale(1.1);
+            transform: translateY(50px);
             opacity: 0;
         }
         .showcase-active {
-            transform: translateY(0) scale(1);
+            transform: translateY(0);
             opacity: 1;
-        }
-        .showcase-img:hover {
-            transform: scale(1.08);
-            filter: brightness(1.1);
-            box-shadow: 0 0 40px rgba(255, 0, 0, 0.3);
         }
     </style>
 </head>
@@ -84,8 +77,8 @@
             <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
                 <template x-for="(label, cat) in categories" :key="cat">
                     <div @click="openCategory(cat)" class="category-card group">
-                        <img :src="`${cat}_photography.jpg`" class="w-full h-full object-cover" :alt="label">
-                        <div class="absolute inset-0 flex flex-col justify-end p-8 bg-gradient-to-t from-black">
+                        <img :src="categoryImages[cat]" class="w-full h-full object-cover" :alt="label">
+                        <div class="absolute inset-0 flex flex-col justify-end p-8 bg-gradient-to-t from-black via-black/20 to-transparent">
                             <h3 class="text-xl font-black leading-tight" x-text="label"></h3>
                             <div class="h-1 w-0 group-hover:w-12 bg-red-600 transition-all duration-500 mt-2"></div>
                         </div>
@@ -118,19 +111,19 @@
             <div class="mt-32 text-center mb-16">
                 <h3 class="text-red-600 font-bold uppercase tracking-[0.4em] mb-4">Portfolio Highlights</h3>
                 <p class="text-zinc-400 text-sm italic max-w-2xl mx-auto leading-relaxed">
-                    Witness the fusion of technical precision and artistic storytelling through our lens. <br>
-                    Every frame is a masterpiece designed to preserve your most significant milestones forever.
+                    Witness the fusion of technical precision and artistic storytelling. <br>
+                    Every frame is a masterpiece designed to preserve your most significant milestones.
                 </p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <template x-for="n in [1,2,3]" :key="n">
+                <template x-for="(img, index) in showcaseImages[activeCategory] || showcaseImages['default']" :key="index">
                     <div class="showcase-container aspect-[3/4]">
                         <img 
-                            :src="`showcase${n}.jpg`" 
+                            :src="img" 
                             class="showcase-img w-full h-full object-cover"
                             :class="currentPage === 'services' ? 'showcase-active' : ''"
-                            :style="`transition-delay: ${n * 250}ms`"
+                            :style="`transition-delay: ${index * 150}ms`"
                         >
                     </div>
                 </template>
@@ -148,22 +141,28 @@
                 <h2 class="text-2xl font-black uppercase text-red-600 italic">Booking</h2>
             </div>
             
-            <div class="space-y-6 mb-12">
+            <div class="space-y-6 mb-12 max-h-[40vh] overflow-y-auto">
                 <template x-for="(item, index) in cart" :key="index">
                     <div class="flex justify-between items-center border-b border-white/5 pb-4">
-                        <p class="font-bold text-xs uppercase" x-text="item.name"></p>
+                        <div>
+                            <p class="font-bold text-xs uppercase" x-text="item.name"></p>
+                            <p class="text-[8px] text-zinc-500 uppercase mt-1" x-text="categories[item.category]"></p>
+                        </div>
                         <button @click="removeFromCart(index)" class="text-red-600 text-[10px] font-black uppercase">Remove</button>
                     </div>
                 </template>
             </div>
 
             <div x-show="cart.length > 0" class="space-y-4">
-                <input type="datetime-local" x-model="customer.date" class="w-full bg-black border border-zinc-800 p-4 text-xs text-white outline-none">
-                <input type="text" x-model="customer.name" placeholder="YOUR NAME" class="w-full bg-black border border-zinc-800 p-4 text-xs text-white outline-none">
-                <input type="tel" x-model="customer.phone" placeholder="PHONE NUMBER" class="w-full bg-black border border-zinc-800 p-4 text-xs text-white outline-none">
+                <input type="datetime-local" x-model="customer.date" class="w-full bg-black border border-zinc-800 p-4 text-xs text-white outline-none focus:border-red-600">
+                <input type="text" x-model="customer.name" placeholder="YOUR NAME" class="w-full bg-black border border-zinc-800 p-4 text-xs text-white outline-none focus:border-red-600">
+                <input type="tel" x-model="customer.phone" placeholder="PHONE NUMBER" class="w-full bg-black border border-zinc-800 p-4 text-xs text-white outline-none focus:border-red-600">
                 <button @click="sendToWhatsApp()" class="w-full bg-red-600 text-white py-5 font-black uppercase text-xs tracking-widest hover:bg-white hover:text-black transition-all">
                     Send to WhatsApp
                 </button>
+            </div>
+            <div x-show="cart.length === 0" class="text-center text-zinc-600 italic text-sm py-20">
+                Your booking list is empty.
             </div>
         </div>
     </div>
@@ -183,6 +182,47 @@
                     product: 'Product Shoots',
                     corporate: 'Corporate Shoots',
                     birthday: 'Birthday Photography & Videography'
+                },
+
+                categoryImages: {
+                    wedding: 'https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=800&auto=format&fit=crop',
+                    premier: 'https://images.unsplash.com/photo-1511732351157-1865efda8b1d?q=80&w=800&auto=format&fit=crop',
+                    product: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=800&auto=format&fit=crop',
+                    corporate: 'https://images.unsplash.com/photo-1477285273399-cf73e1ea4144?q=80&w=800&auto=format&fit=crop',
+                    birthday: 'https://images.unsplash.com/photo-1530103043960-ef38714abb15?q=80&w=800&auto=format&fit=crop'
+                },
+
+                showcaseImages: {
+                    wedding: [
+                        'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?q=80&w=600',
+                        'https://images.unsplash.com/photo-1519225421980-715cb0215aed?q=80&w=600',
+                        'https://images.unsplash.com/photo-1522673607200-1648832cee98?q=80&w=600'
+                    ],
+                    premier: [
+                        'https://images.unsplash.com/photo-1493225255756-d9584f8606e9?q=80&w=600',
+                        'https://images.unsplash.com/photo-1520859092317-4663d9a942a9?q=80&w=600',
+                        'https://images.unsplash.com/photo-1514525253344-a812ca99b86c?q=80&w=600'
+                    ],
+                    product: [
+                        'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=600',
+                        'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=600',
+                        'https://images.unsplash.com/photo-1524678606370-a47ad25cb82a?q=80&w=600'
+                    ],
+                    corporate: [
+                        'https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=600',
+                        'https://images.unsplash.com/photo-1556761175-b413da4baf72?q=80&w=600',
+                        'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=600'
+                    ],
+                    birthday: [
+                        'https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?q=80&w=600',
+                        'https://images.unsplash.com/photo-1527529482837-4698179dc6be?q=80&w=600',
+                        'https://images.unsplash.com/photo-1513151233558-d860c5398176?q=80&w=600'
+                    ],
+                    default: [
+                        'https://images.unsplash.com/photo-1452587925148-ce544e77e70d?q=80&w=600',
+                        'https://images.unsplash.com/photo-1502982722883-0e2a5e2d3d32?q=80&w=600',
+                        'https://images.unsplash.com/photo-1542038784456-1ea8e935640e?q=80&w=600'
+                    ]
                 },
 
                 services: [
@@ -208,7 +248,7 @@
                 openCategory(cat) {
                     this.activeCategory = cat;
                     this.currentPage = 'services';
-                    window.scrollTo(0,0);
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
                 },
 
                 filteredServices() {
@@ -216,7 +256,7 @@
                 },
 
                 addToCart(item) {
-                    this.cart.push({...item, catLabel: this.categories[item.category]});
+                    this.cart.push({...item});
                     this.cartOpen = true;
                 },
 
@@ -226,11 +266,11 @@
 
                 sendToWhatsApp() {
                     if(!this.customer.name || !this.customer.phone) {
-                        alert("Please fill details.");
+                        alert("Please fill your name and phone number.");
                         return;
                     }
                     const items = this.cart.map(i => `• ${i.name} [${this.categories[i.category]}]`).join('\n');
-                    const msg = encodeURIComponent(`*FM STUDIOS*\n\nName: ${this.customer.name}\nPhone: ${this.customer.phone}\nDate: ${this.customer.date}\n\nServices:\n${items}`);
+                    const msg = encodeURIComponent(`*FM STUDIOS - BOOKING REQUEST*\n\n*Name:* ${this.customer.name}\n*Phone:* ${this.customer.phone}\n*Date:* ${this.customer.date}\n\n*Selected Services:*\n${items}`);
                     window.open(`https://wa.me/923352571915?text=${msg}`, '_blank');
                 }
             }
