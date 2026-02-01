@@ -10,33 +10,29 @@
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Montserrat:wght@300;400;700;900&display=swap" rel="stylesheet">
     <style>
         [x-cloak] { display: none !important; }
-        html { overflow-y: scroll; scroll-behavior: smooth; }
+        html { scroll-behavior: smooth; }
         body { background-color: #000; color: #fff; font-family: 'Montserrat', sans-serif; margin: 0; overflow-x: hidden; }
         h1, h2, h3 { font-family: 'Oswald', sans-serif; text-transform: uppercase; }
         
-        /* Category Box Styling */
-        .category-card { 
-            position: relative; 
-            height: 450px; 
-            overflow: hidden; 
-            display: flex; 
-            align-items: flex-end; 
-            padding: 2rem;
-            border: 1px solid #1a1a1a;
-            transition: all 0.5s ease;
+        .hero-bg {
+            background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.95)), 
+                        url('https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=1920&q=80');
+            background-size: cover; background-position: center; background-attachment: fixed;
         }
-        .category-card img { 
-            position: absolute; inset: 0; width: 100%; height: 100%; 
-            object-cover: cover; z-index: 1; filter: grayscale(100%) brightness(0.4); 
-            transition: all 0.6s ease;
-        }
-        .category-card:hover img { filter: grayscale(0%) brightness(0.6); transform: scale(1.05); }
-        .category-card:hover { border-color: #ff0000; }
-        .category-content { z-index: 2; position: relative; width: 100%; }
 
-        .booking-row { border-bottom: 1px solid #1a1a1a; transition: all 0.3s ease; }
-        .booking-row:hover { background: #0a0a0a; border-left: 4px solid #ff0000; }
-        .section-divider { height: 2px; background: linear-gradient(90deg, #ff0000, transparent); margin-bottom: 2rem; }
+        /* Prominent Service Rows */
+        .service-row { 
+            background: linear-gradient(90deg, #0a0a0a 0%, #111 100%);
+            border: 1px solid #1a1a1a;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+        .service-row:hover { 
+            border-color: #ff0000;
+            transform: translateX(10px);
+            box-shadow: -5px 0 20px rgba(255, 0, 0, 0.2);
+        }
+        .section-divider { height: 3px; background: #ff0000; width: 60px; margin-bottom: 2rem; }
     </style>
 </head>
 <body x-data="shopSystem()">
@@ -53,84 +49,61 @@
     </nav>
 
     <div x-show="currentPage === 'home'">
-        <section class="py-20 px-6 max-w-7xl mx-auto">
-            <div class="text-center mb-16">
-                <span class="text-red-600 uppercase tracking-[0.5em] text-[10px] font-bold">Elite Visuals</span>
-                <h2 class="text-5xl font-black italic mt-2">OUR <span class="text-red-600">EXPERTISE</span></h2>
+        <header class="hero-bg pt-24 pb-32 text-center relative min-h-screen flex flex-col justify-center">
+            <div class="max-w-7xl mx-auto px-6 relative z-10">
+                <h1 class="text-[15vw] font-black text-white leading-none opacity-5 absolute left-1/2 -translate-x-1/2 top-0 select-none">FM STUDIOS</h1>
+                <div class="relative pt-12">
+                    <span class="text-red-600 uppercase tracking-[0.6em] text-xs font-bold block mb-4">Elite Capture</span>
+                    <h2 class="text-6xl md:text-8xl font-black text-white mb-8 italic tracking-tighter">BEYOND VISUALS</h2>
+                    <button @click="currentPage = 'bookings'" class="bg-red-600 text-white px-10 py-4 uppercase text-xs font-black tracking-widest hover:bg-white hover:text-black transition">Explore Sections</button>
+                </div>
             </div>
+        </header>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                <div class="category-card">
-                    <img src="wedding_photography.jpg" alt="Wedding">
-                    <div class="category-content">
-                        <h3 class="text-2xl font-black mb-4 italic">Wedding</h3>
-                        <button @click="currentPage = 'bookings'" class="bg-red-600 text-white px-6 py-2 text-[10px] font-black uppercase tracking-widest hover:bg-white hover:text-black transition">View Services</button>
-                    </div>
+        <section class="py-24 bg-zinc-950">
+            <div class="max-w-7xl mx-auto px-6">
+                <h2 class="text-4xl font-black text-center mb-16 italic tracking-tighter">WEDDING <span class="text-red-600">PREVIEW</span></h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+                    <img src="wedding_photography.jpg" class="w-full aspect-[3/4] object-cover border-b-4 border-red-600">
+                    <img src="wedding_cinematography.jpg" class="w-full aspect-[3/4] object-cover border-b-4 border-red-600">
+                    <img src="wedding_dronography.jpg" class="w-full aspect-[3/4] object-cover border-b-4 border-red-600">
                 </div>
-                <div class="category-card">
-                    <img src="corporate_photography.jpg" alt="Corporate">
-                    <div class="category-content">
-                        <h3 class="text-2xl font-black mb-4 italic">Corporate</h3>
-                        <button @click="currentPage = 'bookings'" class="bg-red-600 text-white px-6 py-2 text-[10px] font-black uppercase tracking-widest hover:bg-white hover:text-black transition">View Services</button>
-                    </div>
-                </div>
-                <div class="category-card">
-                    <img src="birthday1.JPG" alt="Birthday">
-                    <div class="category-content">
-                        <h3 class="text-2xl font-black mb-4 italic">Birthday</h3>
-                        <button @click="currentPage = 'bookings'" class="bg-red-600 text-white px-6 py-2 text-[10px] font-black uppercase tracking-widest hover:bg-white hover:text-black transition">View Services</button>
-                    </div>
-                </div>
-                <div class="category-card">
-                    <img src="product1.JPG" alt="Product">
-                    <div class="category-content">
-                        <h3 class="text-2xl font-black mb-4 italic">Product</h3>
-                        <button @click="currentPage = 'bookings'" class="bg-red-600 text-white px-6 py-2 text-[10px] font-black uppercase tracking-widest hover:bg-white hover:text-black transition">View Services</button>
-                    </div>
+                <div class="text-center max-w-2xl mx-auto">
+                    <p class="text-zinc-400 uppercase tracking-widest text-sm leading-relaxed">
+                        Crafting timeless narratives through light and emotion. <br>
+                        Your legacy, captured with cinematic precision.
+                    </p>
                 </div>
             </div>
         </section>
     </div>
 
     <div x-show="currentPage === 'bookings'" x-cloak class="min-h-screen bg-black py-20 px-6">
-        <div class="max-w-5xl mx-auto">
+        <div class="max-w-4xl mx-auto">
             <button @click="currentPage = 'home'" class="text-red-600 text-[10px] font-black uppercase mb-12 tracking-widest hover:text-white">← Back to Home</button>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 mb-32">
-                <template x-for="cat in ['Wedding', 'Corporate', 'Birthday', 'Product Shooting']" :key="cat">
+            <h2 class="text-5xl font-black mb-16 italic uppercase tracking-tighter">SERVICE <span class="text-red-600">MENU</span></h2>
+
+            <div class="space-y-16">
+                <template x-for="cat in ['Premier Shoots', 'Wedding', 'Corporate', 'Birthday', 'Product Shooting']" :key="cat">
                     <div>
-                        <h3 class="text-xl font-black text-white mb-2 uppercase italic tracking-tighter" x-text="cat"></h3>
-                        <div class="section-divider w-24"></div>
-                        <div class="space-y-1">
+                        <h3 class="text-2xl font-black text-white mb-2 italic" x-text="cat"></h3>
+                        <div class="section-divider"></div>
+                        <div class="grid gap-3">
                             <template x-for="item in getAllServices().filter(s => s.category === cat)" :key="item.id">
-                                <div class="booking-row flex justify-between items-center py-3 px-2">
-                                    <span class="text-zinc-400 font-bold uppercase text-[11px] tracking-wide" x-text="item.name"></span>
-                                    <button @click="addToCart(item)" class="text-[9px] font-black text-red-600 hover:text-white uppercase tracking-tighter">+ Add</button>
+                                <div class="service-row flex justify-between items-center p-5 group cursor-pointer" @click="addToCart(item)">
+                                    <div class="flex flex-col">
+                                        <span class="text-white font-bold uppercase text-sm tracking-widest group-hover:text-red-500 transition" x-text="item.name"></span>
+                                        <span class="text-[9px] text-zinc-500 uppercase tracking-tighter">Premium Session</span>
+                                    </div>
+                                    <div class="flex items-center gap-4">
+                                        <span class="text-[10px] font-black text-red-600 opacity-0 group-hover:opacity-100 transition tracking-widest uppercase">Select Service</span>
+                                        <i class="fa-solid fa-plus text-red-600 group-hover:scale-125 transition"></i>
+                                    </div>
                                 </div>
                             </template>
                         </div>
                     </div>
                 </template>
-            </div>
-
-            <div class="border-t border-zinc-900 pt-32">
-                <h2 class="text-4xl font-black text-center mb-24 italic tracking-tighter">FEATURED <span class="text-red-600">WORK</span></h2>
-                
-                <div class="space-y-40">
-                    <div>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                            <img src="wedding_photography.jpg" class="aspect-[4/5] object-cover grayscale hover:grayscale-0 transition duration-500">
-                            <img src="wedding_cinematography.jpg" class="aspect-[4/5] object-cover grayscale hover:grayscale-0 transition duration-500">
-                            <img src="wedding_dronography.jpg" class="aspect-[4/5] object-cover grayscale hover:grayscale-0 transition duration-500">
-                        </div>
-                        <h3 class="text-xl font-bold text-red-600 italic uppercase">Wedding Excellence</h3>
-                        <p class="text-zinc-500 text-sm mt-2 leading-relaxed font-medium uppercase tracking-widest">
-                            Cinematic storytelling that captures the soul of your union. <br>
-                            From intimate moments to grand celebrations, we frame eternity.
-                        </p>
-                    </div>
-
-                    </div>
             </div>
         </div>
     </div>
@@ -174,46 +147,40 @@
                 cart: [],
                 customer: { name: '', phone: '', date: '' },
                 weddingServices: [
-                    { id: 101, category: 'Wedding', name: 'Photography' },
-                    { id: 102, category: 'Wedding', name: 'Cinematography' },
-                    { id: 103, category: 'Wedding', name: 'Dronography' },
-                    { id: 104, category: 'Wedding', name: 'Video and photo editing' },
-                    { id: 105, category: 'Wedding', name: 'Customised photo Albums And Frames' }
+                    { id: 101, category: 'Wedding', name: 'Wedding Photography' },
+                    { id: 102, category: 'Wedding', name: 'Wedding Cinematography' },
+                    { id: 103, category: 'Wedding', name: 'Drone Coverage' },
+                    { id: 104, category: 'Wedding', name: 'Album & Frames' }
+                ],
+                premierServices: [
+                    { id: 501, category: 'Premier Shoots', name: 'Fashion Editorial' },
+                    { id: 502, category: 'Premier Shoots', name: 'Music Videos' },
+                    { id: 503, category: 'Premier Shoots', name: 'Documentary Films' }
                 ],
                 corporateServices: [
                     { id: 201, category: 'Corporate', name: 'Photography' },
                     { id: 202, category: 'Corporate', name: 'Cinematography' },
-                    { id: 203, category: 'Corporate', name: 'Dronography' },
-                    { id: 204, category: 'Corporate', name: 'Photo Frames' },
-                    { id: 205, category: 'Corporate', name: 'Photo and video editing' }
+                    { id: 203, category: 'Corporate', name: 'Testimonials' },
+                    { id: 204, category: 'Corporate', name: 'Photo Frames' }
                 ],
                 birthdayServices: [
                     { id: 301, category: 'Birthday', name: 'Photography' },
                     { id: 302, category: 'Birthday', name: 'Videography' },
-                    { id: 303, category: 'Birthday', name: 'Dronography' },
-                    { id: 304, category: 'Birthday', name: 'Photo album and frames' },
-                    { id: 305, category: 'Birthday', name: 'Photo and video editing' }
+                    { id: 303, category: 'Birthday', name: 'Reels' }
                 ],
                 productServices: [
                     { id: 401, category: 'Product Shooting', name: 'Photography' },
-                    { id: 402, category: 'Product Shooting', name: 'Cinematography' },
-                    { id: 403, category: 'Product Shooting', name: 'Photo and video editing' }
+                    { id: 402, category: 'Product Shooting', name: 'Videography' }
                 ],
                 getAllServices() {
-                    return [...this.weddingServices, ...this.corporateServices, ...this.birthdayServices, ...this.productServices];
+                    return [...this.premierServices, ...this.weddingServices, ...this.corporateServices, ...this.birthdayServices, ...this.productServices];
                 },
                 addToCart(item) { this.cart.push(item); this.cartOpen = true; },
                 removeFromCart(index) { this.cart.splice(index, 1); },
                 sendToWhatsApp() {
                     if(!this.customer.name || !this.customer.phone) { alert("Please fill in details."); return; }
                     const services = this.cart.map(i => `• [${i.category}] ${i.name}`).join('\n');
-                    const msg = encodeURIComponent(
-                        `*FM STUDIOS BOOKING*\n\n` +
-                        `*Name:* ${this.customer.name}\n` +
-                        `*Phone:* ${this.customer.phone}\n` +
-                        `*Date:* ${this.customer.date}\n\n` +
-                        `*Services:*\n${services}`
-                    );
+                    const msg = encodeURIComponent(`*FM STUDIOS BOOKING*\n\n*Name:* ${this.customer.name}\n*Phone:* ${this.customer.phone}\n*Date:* ${this.customer.date}\n\n*Services:*\n${services}`);
                     window.open(`https://wa.me/923352571915?text=${msg}`, '_blank');
                 }
             }
