@@ -14,7 +14,7 @@
         body { background-color: #000; color: #fff; font-family: 'Montserrat', sans-serif; overflow-x: hidden; }
         h1, h2, h3 { font-family: 'Oswald', sans-serif; text-transform: uppercase; }
         
-        /* Expanded Hero Background (Top, Left, Right) */
+        /* Full width header background with photographer theme */
         .hero-full-width {
             background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.9)), 
                         url('https://images.unsplash.com/photo-1554048612-b6a482bc67e5?q=80&w=1920&auto=format&fit=crop');
@@ -40,7 +40,7 @@
         .category-card:hover img { transform: scale(1.1); filter: brightness(0.3); }
 
         /* Showcase Image Animations */
-        .showcase-container { overflow: hidden; position: relative; border: 1px solid #1a1a1a; }
+        .showcase-container { overflow: hidden; position: relative; border: 1px solid #1a1a1a; background: #111; }
         .showcase-img {
             transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
             transform: translateY(120px) scale(1.1);
@@ -52,7 +52,7 @@
         }
         .showcase-img:hover {
             transform: scale(1.08);
-            filter: brightness(1.2);
+            filter: brightness(1.1);
             box-shadow: 0 0 40px rgba(255, 0, 0, 0.3);
         }
     </style>
@@ -84,7 +84,7 @@
             <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
                 <template x-for="(label, cat) in categories" :key="cat">
                     <div @click="openCategory(cat)" class="category-card group">
-                        <img :src="categoryImages[cat]" class="w-full h-full object-cover">
+                        <img :src="`${cat}_photography.jpg`" class="w-full h-full object-cover" :alt="label">
                         <div class="absolute inset-0 flex flex-col justify-end p-8 bg-gradient-to-t from-black">
                             <h3 class="text-xl font-black leading-tight" x-text="label"></h3>
                             <div class="h-1 w-0 group-hover:w-12 bg-red-600 transition-all duration-500 mt-2"></div>
@@ -127,7 +127,7 @@
                 <template x-for="n in [1,2,3]" :key="n">
                     <div class="showcase-container aspect-[3/4]">
                         <img 
-                            :src="`https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=800&q=80`" 
+                            :src="`showcase${n}.jpg`" 
                             class="showcase-img w-full h-full object-cover"
                             :class="currentPage === 'services' ? 'showcase-active' : ''"
                             :style="`transition-delay: ${n * 250}ms`"
@@ -158,9 +158,9 @@
             </div>
 
             <div x-show="cart.length > 0" class="space-y-4">
-                <input type="datetime-local" x-model="customer.date" class="w-full bg-black border border-zinc-800 p-4 text-xs text-white outline-none focus:border-red-600">
-                <input type="text" x-model="customer.name" placeholder="YOUR NAME" class="w-full bg-black border border-zinc-800 p-4 text-xs text-white outline-none focus:border-red-600">
-                <input type="tel" x-model="customer.phone" placeholder="PHONE NUMBER" class="w-full bg-black border border-zinc-800 p-4 text-xs text-white outline-none focus:border-red-600">
+                <input type="datetime-local" x-model="customer.date" class="w-full bg-black border border-zinc-800 p-4 text-xs text-white outline-none">
+                <input type="text" x-model="customer.name" placeholder="YOUR NAME" class="w-full bg-black border border-zinc-800 p-4 text-xs text-white outline-none">
+                <input type="tel" x-model="customer.phone" placeholder="PHONE NUMBER" class="w-full bg-black border border-zinc-800 p-4 text-xs text-white outline-none">
                 <button @click="sendToWhatsApp()" class="w-full bg-red-600 text-white py-5 font-black uppercase text-xs tracking-widest hover:bg-white hover:text-black transition-all">
                     Send to WhatsApp
                 </button>
@@ -183,14 +183,6 @@
                     product: 'Product Shoots',
                     corporate: 'Corporate Shoots',
                     birthday: 'Birthday Photography & Videography'
-                },
-
-                categoryImages: {
-                    wedding: 'wedding_photography.jpg',
-                    premier: 'https://images.unsplash.com/photo-1493225255756-d9584f8606e9?auto=format&fit=crop&w=800&q=80',
-                    product: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=800&q=80',
-                    corporate: 'https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=800&q=80',
-                    birthday: 'https://images.unsplash.com/photo-1464349153735-7db50ed83c84?auto=format&fit=crop&w=800&q=80'
                 },
 
                 services: [
