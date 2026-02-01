@@ -14,15 +14,15 @@
         body { background-color: #000; color: #fff; font-family: 'Montserrat', sans-serif; overflow-x: hidden; }
         h1, h2, h3 { font-family: 'Oswald', sans-serif; text-transform: uppercase; }
         
-        /* Background restricted ONLY to the Hero Heading area */
-        .hero-bg-box {
-            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.8)), 
+        /* Expanded Hero Background (Top, Left, Right) */
+        .hero-full-width {
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.9)), 
                         url('https://images.unsplash.com/photo-1554048612-b6a482bc67e5?q=80&w=1920&auto=format&fit=crop');
             background-size: cover;
             background-position: center;
-            border-radius: 4px;
-            padding: 100px 20px;
-            border: 1px solid #222;
+            width: 100%;
+            padding: 120px 0;
+            border-bottom: 1px solid #1a1a1a;
         }
 
         .glass { background: rgba(15, 15, 15, 0.7); backdrop-filter: blur(15px); border: 1px solid #222; }
@@ -40,22 +40,20 @@
         .category-card:hover img { transform: scale(1.1); filter: brightness(0.3); }
 
         /* Showcase Image Animations */
-        .showcase-container { overflow: hidden; position: relative; }
+        .showcase-container { overflow: hidden; position: relative; border: 1px solid #1a1a1a; }
         .showcase-img {
-            transition: all 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
-            transform: translateY(100px) scale(1.2);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateY(120px) scale(1.1);
             opacity: 0;
-            filter: grayscale(100%) brightness(0.5);
         }
         .showcase-active {
             transform: translateY(0) scale(1);
             opacity: 1;
-            filter: grayscale(0%) brightness(1);
         }
         .showcase-img:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 30px rgba(255, 0, 0, 0.4);
-            z-index: 10;
+            transform: scale(1.08);
+            filter: brightness(1.2);
+            box-shadow: 0 0 40px rgba(255, 0, 0, 0.3);
         }
     </style>
 </head>
@@ -67,7 +65,7 @@
         </div>
         <div class="flex items-center gap-8 text-[10px] font-bold uppercase tracking-widest">
             <button @click="currentPage = 'home'" :class="currentPage === 'home' ? 'text-red-600' : 'text-white'">Home</button>
-            <button @click="cartOpen = true" class="relative text-white">
+            <button @click="cartOpen = true" class="relative text-white hover:text-red-600 transition">
                 <i class="fa-solid fa-cart-shopping text-xl"></i>
                 <span x-show="cart.length > 0" class="absolute -top-2 -right-2 bg-red-600 text-white rounded-full h-4 w-4 flex items-center justify-center text-[8px]" x-text="cart.length"></span>
             </button>
@@ -75,18 +73,20 @@
     </nav>
 
     <main x-show="currentPage === 'home'" x-transition:enter="transition duration-500">
-        <div class="max-w-7xl mx-auto px-6 py-12">
-            <header class="hero-bg-box text-center mb-16">
+        <header class="hero-full-width text-center">
+            <div class="max-w-7xl mx-auto px-6">
                 <span class="text-red-600 uppercase tracking-[0.8em] text-xs font-bold block mb-4">The Elite Standard</span>
                 <h1 class="text-5xl md:text-8xl font-black italic tracking-tighter">SELECT YOUR <span class="text-red-600">VISION</span></h1>
-            </header>
-            
+            </div>
+        </header>
+        
+        <div class="max-w-7xl mx-auto px-6 py-16">
             <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
                 <template x-for="(label, cat) in categories" :key="cat">
                     <div @click="openCategory(cat)" class="category-card group">
                         <img :src="categoryImages[cat]" class="w-full h-full object-cover">
                         <div class="absolute inset-0 flex flex-col justify-end p-8 bg-gradient-to-t from-black">
-                            <h3 class="text-2xl font-black leading-tight" x-text="label"></h3>
+                            <h3 class="text-xl font-black leading-tight" x-text="label"></h3>
                             <div class="h-1 w-0 group-hover:w-12 bg-red-600 transition-all duration-500 mt-2"></div>
                         </div>
                     </div>
@@ -108,21 +108,29 @@
                 <template x-for="item in filteredServices()" :key="item.name">
                     <div @click="addToCart(item)" class="glass p-8 flex justify-between items-center group cursor-pointer hover:border-red-600 transition">
                         <h4 class="font-bold uppercase tracking-widest text-sm" x-text="item.name"></h4>
-                        <div class="h-10 w-10 rounded-full border border-zinc-800 flex items-center justify-center group-hover:bg-red-600 transition">
-                            <i class="fa-solid fa-plus text-xs"></i>
+                        <div class="h-10 w-10 rounded-full border border-zinc-800 flex items-center justify-center group-hover:bg-red-600 group-hover:border-red-600 transition">
+                            <i class="fa-solid fa-plus text-xs text-red-600 group-hover:text-white"></i>
                         </div>
                     </div>
                 </template>
             </div>
 
+            <div class="mt-32 text-center mb-16">
+                <h3 class="text-red-600 font-bold uppercase tracking-[0.4em] mb-4">Portfolio Highlights</h3>
+                <p class="text-zinc-400 text-sm italic max-w-2xl mx-auto leading-relaxed">
+                    Witness the fusion of technical precision and artistic storytelling through our lens. <br>
+                    Every frame is a masterpiece designed to preserve your most significant milestones forever.
+                </p>
+            </div>
+
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <template x-for="n in [1,2,3]" :key="n">
-                    <div class="showcase-container aspect-[3/4] border border-white/5">
+                    <div class="showcase-container aspect-[3/4]">
                         <img 
                             :src="`https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=800&q=80`" 
                             class="showcase-img w-full h-full object-cover"
                             :class="currentPage === 'services' ? 'showcase-active' : ''"
-                            :style="`transition-delay: ${n * 200}ms`"
+                            :style="`transition-delay: ${n * 250}ms`"
                         >
                     </div>
                 </template>
@@ -150,9 +158,9 @@
             </div>
 
             <div x-show="cart.length > 0" class="space-y-4">
-                <input type="datetime-local" x-model="customer.date" class="w-full bg-black border border-zinc-800 p-4 text-xs text-white">
-                <input type="text" x-model="customer.name" placeholder="YOUR NAME" class="w-full bg-black border border-zinc-800 p-4 text-xs text-white">
-                <input type="tel" x-model="customer.phone" placeholder="PHONE NUMBER" class="w-full bg-black border border-zinc-800 p-4 text-xs text-white">
+                <input type="datetime-local" x-model="customer.date" class="w-full bg-black border border-zinc-800 p-4 text-xs text-white outline-none focus:border-red-600">
+                <input type="text" x-model="customer.name" placeholder="YOUR NAME" class="w-full bg-black border border-zinc-800 p-4 text-xs text-white outline-none focus:border-red-600">
+                <input type="tel" x-model="customer.phone" placeholder="PHONE NUMBER" class="w-full bg-black border border-zinc-800 p-4 text-xs text-white outline-none focus:border-red-600">
                 <button @click="sendToWhatsApp()" class="w-full bg-red-600 text-white py-5 font-black uppercase text-xs tracking-widest hover:bg-white hover:text-black transition-all">
                     Send to WhatsApp
                 </button>
