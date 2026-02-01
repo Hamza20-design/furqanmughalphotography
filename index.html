@@ -11,23 +11,46 @@
     <style>
         [x-cloak] { display: none !important; }
         html { scroll-behavior: smooth; }
-        body { background-color: #000; color: #fff; font-family: 'Montserrat', sans-serif; }
+        body { background-color: #000; color: #fff; font-family: 'Montserrat', sans-serif; overflow-x: hidden; }
         h1, h2, h3 { font-family: 'Oswald', sans-serif; text-transform: uppercase; }
         
-        .glass { background: rgba(15, 15, 15, 0.8); backdrop-filter: blur(12px); border: 1px solid #222; }
-        .red-gradient { background: linear-gradient(45deg, #ff0000, #990000); }
+        /* Hero Background Styling */
+        .hero-section {
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.9)), 
+                        url('https://images.unsplash.com/photo-1452723312111-3a7d0db0e024?auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        .glass { background: rgba(15, 15, 15, 0.7); backdrop-filter: blur(15px); border: 1px solid #222; }
         
+        /* Modern Category Card */
         .category-card {
             position: relative;
-            overflow: hidden;
-            height: 400px;
-            transition: all 0.5s ease;
+            height: 450px;
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
             cursor: pointer;
             border: 1px solid #1a1a1a;
+            overflow: hidden;
         }
-        .category-card:hover { border-color: #ff0000; transform: translateY(-5px); }
-        .category-card img { transition: transform 0.7s ease; filter: brightness(0.6); }
-        .category-card:hover img { transform: scale(1.1); filter: brightness(0.4); }
+        .category-card:hover { border-color: #ff0000; transform: translateY(-10px); }
+        .category-card img { transition: transform 0.8s ease; filter: brightness(0.5) grayscale(30%); }
+        .category-card:hover img { transform: scale(1.1); filter: brightness(0.3) grayscale(0%); }
+
+        /* Work Showcase Animation */
+        .work-img {
+            transition: all 0.5s ease;
+            filter: grayscale(100%);
+            transform: scale(0.95);
+            opacity: 0;
+        }
+        .show-work {
+            filter: grayscale(0%);
+            transform: scale(1);
+            opacity: 1;
+        }
+        .work-img:hover { transform: translateY(-5px) scale(1.02); box-shadow: 0 10px 20px rgba(255,0,0,0.2); }
     </style>
 </head>
 <body x-data="shopSystem()">
@@ -37,80 +60,118 @@
             FM <span class="text-red-600">STUDIOS</span>
         </div>
         <div class="flex items-center gap-8 text-[10px] font-bold uppercase tracking-widest">
-            <button @click="currentPage = 'home'" :class="currentPage === 'home' ? 'text-red-600' : 'text-white'">Home</button>
-            <button @click="cartOpen = true" class="relative text-white">
+            <button @click="currentPage = 'home'" :class="currentPage === 'home' ? 'text-red-600' : 'text-white'" class="hover:text-red-500 transition">Home</button>
+            <button @click="cartOpen = true" class="relative text-white hover:text-red-500 transition">
                 <i class="fa-solid fa-cart-shopping text-xl"></i>
                 <span x-show="cart.length > 0" class="absolute -top-2 -right-2 bg-red-600 text-white rounded-full h-4 w-4 flex items-center justify-center text-[8px]" x-text="cart.length"></span>
             </button>
         </div>
     </nav>
 
-    <main x-show="currentPage === 'home'" x-transition>
-        <header class="py-20 px-6 text-center">
-            <span class="text-red-600 uppercase tracking-[0.6em] text-[10px] font-bold">The Elite Standard</span>
-            <h1 class="text-5xl md:text-7xl font-black italic mt-4 mb-12">SELECT YOUR <span class="text-red-600">VISION</span></h1>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4 max-w-7xl mx-auto">
-                <template x-for="(label, cat) in categories" :key="cat">
-                    <div @click="openCategory(cat)" class="category-card group">
-                        <img :src="categoryImages[cat]" class="w-full h-full object-cover">
-                        <div class="absolute inset-0 flex flex-col justify-end p-6 text-left">
-                            <h3 class="text-2xl font-black leading-tight" x-text="label"></h3>
-                            <div class="h-1 w-0 group-hover:w-12 bg-red-600 transition-all duration-300 mt-2"></div>
-                            <span class="text-[9px] mt-4 opacity-0 group-hover:opacity-100 transition-opacity tracking-widest uppercase">Explore Services →</span>
+    <main x-show="currentPage === 'home'" x-transition:enter="transition duration-500" x-transition:enter-start="opacity-0">
+        <header class="hero-section min-h-screen flex flex-col justify-center items-center text-center px-6">
+            <div class="max-w-7xl w-full">
+                <span class="text-red-600 uppercase tracking-[0.8em] text-xs font-bold mb-4 block animate-pulse">The Elite Standard</span>
+                <h1 class="text-6xl md:text-8xl font-black italic mb-16 tracking-tighter">SELECT YOUR <span class="text-red-600">VISION</span></h1>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                    <template x-for="(label, cat) in categories" :key="cat">
+                        <div @click="openCategory(cat)" class="category-card group">
+                            <img :src="categoryImages[cat]" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 flex flex-col justify-end p-8 text-left bg-gradient-to-t from-black via-transparent">
+                                <h3 class="text-2xl font-black leading-tight mb-2" x-text="label"></h3>
+                                <div class="h-1 w-12 bg-red-600 mb-4 transform origin-left transition-transform scale-x-0 group-hover:scale-x-100 duration-500"></div>
+                                <span class="text-[9px] opacity-60 tracking-[0.3em] uppercase">Enter Gallery</span>
+                            </div>
                         </div>
-                    </div>
-                </template>
+                    </template>
+                </div>
             </div>
         </header>
     </main>
 
-    <section x-show="currentPage === 'services'" x-cloak class="min-h-screen py-20 px-6">
-        <div class="max-w-4xl mx-auto">
-            <div class="flex items-center gap-4 mb-12">
-                <button @click="currentPage = 'home'" class="hover:text-red-600 transition"><i class="fa-solid fa-arrow-left"></i></button>
-                <h2 class="text-4xl font-black italic uppercase" x-text="categories[activeCategory]"></h2>
+    <section x-show="currentPage === 'services'" x-cloak x-transition class="min-h-screen py-20 px-6 bg-zinc-950">
+        <div class="max-w-5xl mx-auto">
+            <div class="flex items-center justify-between mb-16">
+                <div class="flex items-center gap-6">
+                    <button @click="currentPage = 'home'" class="h-12 w-12 rounded-full border border-white/10 flex items-center justify-center hover:bg-red-600 hover:border-red-600 transition">
+                        <i class="fa-solid fa-arrow-left"></i>
+                    </button>
+                    <h2 class="text-4xl md:text-5xl font-black italic uppercase tracking-tighter" x-text="categories[activeCategory]"></h2>
+                </div>
+                <div class="h-[2px] flex-1 bg-gradient-to-r from-red-600 to-transparent ml-8 hidden md:block"></div>
             </div>
 
-            <div class="grid gap-4">
+            <div class="grid gap-4 mb-20">
                 <template x-for="item in filteredServices()" :key="item.name">
-                    <div @click="addToCart(item)" class="glass p-6 flex justify-between items-center group cursor-pointer hover:border-red-600 transition">
+                    <div @click="addToCart(item)" class="glass p-8 flex justify-between items-center group cursor-pointer hover:border-red-600/50 transition-all duration-300">
                         <div>
-                            <h4 class="font-bold uppercase tracking-widest text-sm group-hover:text-red-500 transition" x-text="item.name"></h4>
-                            <p class="text-[9px] text-zinc-500 uppercase mt-1">Professional Excellence</p>
+                            <h4 class="font-bold uppercase tracking-[0.2em] text-sm group-hover:text-red-500 transition" x-text="item.name"></h4>
+                            <p class="text-[10px] text-zinc-500 uppercase mt-1 tracking-widest">Premium Service Tier</p>
                         </div>
-                        <div class="h-10 w-10 rounded-full border border-zinc-800 flex items-center justify-center group-hover:bg-red-600 transition">
-                            <i class="fa-solid fa-plus text-xs"></i>
+                        <div class="flex items-center gap-4">
+                            <span class="text-[9px] uppercase font-bold opacity-0 group-hover:opacity-100 transition tracking-tighter">Add to Booking</span>
+                            <div class="h-10 w-10 rounded-full border border-zinc-800 flex items-center justify-center group-hover:bg-red-600 group-hover:border-red-600 transition">
+                                <i class="fa-solid fa-plus text-xs"></i>
+                            </div>
                         </div>
                     </div>
                 </template>
+            </div>
+
+            <div class="mt-24">
+                <div class="text-center mb-12">
+                    <h3 class="text-xl font-bold italic tracking-[0.4em] text-red-600">Our Recent Work</h3>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <template x-for="n in [1,2,3]" :key="n">
+                        <div class="aspect-[4/5] overflow-hidden border border-zinc-800">
+                            <img 
+                                :src="`https://images.unsplash.com/photo-1542038784456-1ea8e935640e?q=80&w=800&auto=format&fit=crop`" 
+                                class="work-img w-full h-full object-cover show-work"
+                                :style="`transition-delay: ${n * 150}ms`"
+                            >
+                        </div>
+                    </template>
+                </div>
             </div>
         </div>
     </section>
 
     <div x-show="cartOpen" x-cloak class="fixed inset-0 z-[60]">
-        <div class="absolute inset-0 bg-black/90 backdrop-blur-sm" @click="cartOpen = false"></div>
-        <div class="absolute right-0 top-0 h-full w-full max-w-md bg-zinc-950 p-10 border-l border-red-900/30">
-            <h2 class="text-2xl font-black uppercase text-red-600 italic mb-8">Booking Cart</h2>
+        <div class="absolute inset-0 bg-black/90 backdrop-blur-md" @click="cartOpen = false"></div>
+        <div class="absolute right-0 top-0 h-full w-full max-w-md bg-zinc-950 p-10 border-l border-red-900/30 overflow-y-auto">
+            <div class="flex justify-between items-center mb-10">
+                <button @click="cartOpen = false" class="text-zinc-500 hover:text-white text-xs font-bold uppercase tracking-widest flex items-center gap-2">
+                    <i class="fa-solid fa-chevron-left"></i> Back to Services
+                </button>
+                <h2 class="text-2xl font-black uppercase text-red-600 italic">Cart</h2>
+            </div>
             
-            <div class="space-y-4 mb-8 max-h-[50vh] overflow-y-auto">
+            <div class="space-y-6 mb-12">
                 <template x-for="(item, index) in cart" :key="index">
-                    <div class="flex justify-between items-center border-b border-white/5 pb-4">
+                    <div class="flex justify-between items-start border-b border-white/5 pb-6">
                         <div>
-                            <p class="font-bold text-xs uppercase" x-text="item.name"></p>
-                            <p class="text-[9px] text-red-600 uppercase" x-text="item.category"></p>
+                            <p class="font-bold text-sm uppercase tracking-wider" x-text="item.name"></p>
+                            <p class="text-[9px] text-red-600 uppercase font-black mt-1" x-text="item.catLabel"></p>
                         </div>
-                        <button @click="removeFromCart(index)" class="text-zinc-600 hover:text-red-600 text-xs uppercase font-bold">Remove</button>
+                        <button @click="removeFromCart(index)" class="text-zinc-600 hover:text-red-500 transition-colors"><i class="fa-solid fa-trash-can text-xs"></i></button>
                     </div>
                 </template>
+                <div x-show="cart.length === 0" class="text-center py-20 text-zinc-700 font-bold uppercase tracking-[0.3em] text-[10px]">Your Selection is Empty</div>
             </div>
 
             <div x-show="cart.length > 0" class="space-y-4">
-                <input type="datetime-local" x-model="customer.date" class="w-full bg-black border border-zinc-800 p-4 text-xs text-white">
-                <input type="text" x-model="customer.name" placeholder="FULL NAME" class="w-full bg-black border border-zinc-800 p-4 text-xs text-white">
-                <input type="tel" x-model="customer.phone" placeholder="PHONE NUMBER" class="w-full bg-black border border-zinc-800 p-4 text-xs text-white">
-                <button @click="sendToWhatsApp()" class="w-full bg-red-600 text-white py-5 font-black uppercase text-xs tracking-widest hover:bg-white hover:text-black transition-all">
-                    Send to WhatsApp
+                <div class="grid grid-cols-1 gap-4">
+                    <div class="space-y-1">
+                        <label class="text-[9px] font-bold text-zinc-500 uppercase tracking-widest ml-1">Event Date</label>
+                        <input type="datetime-local" x-model="customer.date" class="w-full bg-black border border-zinc-800 p-4 text-xs text-white focus:border-red-600 outline-none">
+                    </div>
+                    <input type="text" x-model="customer.name" placeholder="FULL NAME" class="w-full bg-black border border-zinc-800 p-4 text-xs text-white focus:border-red-600 outline-none">
+                    <input type="tel" x-model="customer.phone" placeholder="PHONE NUMBER" class="w-full bg-black border border-zinc-800 p-4 text-xs text-white focus:border-red-600 outline-none">
+                </div>
+                <button @click="sendToWhatsApp()" class="w-full bg-red-600 text-white py-5 font-black uppercase text-xs tracking-[0.3em] hover:bg-white hover:text-black transition-all duration-500 shadow-xl shadow-red-900/10">
+                    Confirm via WhatsApp
                 </button>
             </div>
         </div>
@@ -134,41 +195,37 @@
                 },
 
                 categoryImages: {
-                    wedding: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=800&q=80',
-                    premier: 'https://images.unsplash.com/photo-1493225255756-d9584f8606e9?auto=format&fit=crop&w=800&q=80',
-                    product: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=800&q=80',
-                    corporate: 'https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=800&q=80',
-                    birthday: 'https://images.unsplash.com/photo-1464349153735-7db50ed83c84?auto=format&fit=crop&w=800&q=80'
+                    wedding: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80',
+                    premier: 'https://images.unsplash.com/photo-1514525253361-bee8a18744ad?auto=format&fit=crop&w=800&q=80',
+                    product: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=800&q=80',
+                    corporate: 'https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=800&q=80',
+                    birthday: 'https://images.unsplash.com/photo-1530103043960-ef38714abb15?auto=format&fit=crop&w=800&q=80'
                 },
 
                 services: [
-                    // Wedding
                     { category: 'wedding', name: 'Photography' },
                     { category: 'wedding', name: 'Videography' },
                     { category: 'wedding', name: 'Cinematography' },
                     { category: 'wedding', name: 'Customized Frames & Albums' },
                     { category: 'wedding', name: 'Video & Photo Editing' },
-                    // Corporate
                     { category: 'corporate', name: 'Testimonials' },
                     { category: 'corporate', name: 'Photography' },
                     { category: 'corporate', name: 'Cinematography' },
                     { category: 'corporate', name: 'Photo & Video Editing' },
-                    // Product
                     { category: 'product', name: 'Photography' },
                     { category: 'product', name: 'Cinematography' },
                     { category: 'product', name: 'Photo & Video Editing' },
-                    // Birthday
                     { category: 'birthday', name: 'Photography' },
                     { category: 'birthday', name: 'Cinematography' },
                     { category: 'birthday', name: 'Reels' },
                     { category: 'birthday', name: 'Customized Albums & Frames' },
-                    // Premier
                     { category: 'premier', name: 'Music Videos' }
                 ],
 
                 openCategory(cat) {
                     this.activeCategory = cat;
                     this.currentPage = 'services';
+                    window.scrollTo(0,0);
                 },
 
                 filteredServices() {
@@ -186,16 +243,16 @@
 
                 sendToWhatsApp() {
                     if(!this.customer.name || !this.customer.phone) {
-                        alert("Please fill in your details.");
+                        alert("Please provide contact details.");
                         return;
                     }
-                    const items = this.cart.map(i => `• ${i.name} (${this.categories[i.category]})`).join('\n');
+                    const items = this.cart.map(i => `• ${i.name} [${this.categories[i.category]}]`).join('\n');
                     const msg = encodeURIComponent(
-                        `*FM STUDIOS BOOKING*\n\n` +
-                        `*Name:* ${this.customer.name}\n` +
-                        `*Phone:* ${this.customer.phone}\n` +
+                        `*NEW BOOKING REQUEST - FM STUDIOS*\n\n` +
+                        `*Client:* ${this.customer.name}\n` +
+                        `*Contact:* ${this.customer.phone}\n` +
                         `*Date:* ${this.customer.date}\n\n` +
-                        `*Services:*\n${items}`
+                        `*Requested Services:*\n${items}`
                     );
                     window.open(`https://wa.me/923352571915?text=${msg}`, '_blank');
                 }
