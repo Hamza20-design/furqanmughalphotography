@@ -73,8 +73,8 @@
             </div>
         </header>
         
-        <div class="max-w-7xl mx-auto px-6 py-16">
-            <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
+        <div class="max-w-[1600px] mx-auto px-6 py-16">
+            <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4">
                 <template x-for="(label, cat) in categories" :key="cat">
                     <div @click="openCategory(cat)" class="category-card group">
                         <img :src="categoryImages[cat]" class="w-full h-full object-cover" :alt="label">
@@ -116,7 +116,7 @@
                 </p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-center">
                 <template x-for="(img, index) in showcaseImages[activeCategory] || showcaseImages['default']" :key="index">
                     <div class="showcase-container aspect-[3/4]">
                         <img 
@@ -181,7 +181,8 @@
                     premier: 'Premier Shoots',
                     product: 'Product Shoots',
                     corporate: 'Corporate Shoots',
-                    birthday: 'Birthday Photography & Videography'
+                    birthday: 'Birthday Photography & Videography',
+                    fashion: 'Fashion Shoots'
                 },
 
                 categoryImages: {
@@ -189,7 +190,8 @@
                     premier: 'corporate_photography.jpg',
                     product: 'product1.JPG',
                     corporate: 'corporate_cinematography.jpg',
-                    birthday: 'birthday2.JPG'
+                    birthday: 'birthday2.JPG',
+                    fashion: 'https://images.unsplash.com/photo-1539109132382-381bb3f1cffb?q=80&w=800&auto=format&fit=crop'
                 },
 
                 showcaseImages: {
@@ -209,14 +211,17 @@
                         'wedding_cinematography.jpg'
                     ],
                     birthday: [
-                                      'https://devoted-plum-nr2fmcpa2l.edgeone.app/IMG_20260123_181741.jpg',
-
-'birthday4.jpg'
+                        'https://devoted-plum-nr2fmcpa2l.edgeone.app/IMG_20260123_181741.jpg',
+                        'birthday4.jpg'
+                    ],
+                    fashion: [
+                        'https://images.unsplash.com/photo-1469334031218-e382a71b716b?q=80&w=600',
+                        'https://images.unsplash.com/photo-1496747611176-843222e1e57c?q=80&w=600',
+                        'https://images.unsplash.com/photo-1509631179647-0177331693ae?q=80&w=600'
                     ],
                     default: [
                         'https://images.unsplash.com/photo-1452587925148-ce544e77e70d?q=80&w=600',
-                        'https://images.unsplash.com/photo-1502982722883-0e2a5e2d3d32?q=80&w=600',
-                        'https://images.unsplash.com/photo-1542038784456-1ea8e935640e?q=80&w=600'
+                        'https://images.unsplash.com/photo-1502982722883-0e2a5e2d3d32?q=80&w=600'
                     ]
                 },
 
@@ -237,7 +242,11 @@
                     { category: 'birthday', name: 'Cinematography' },
                     { category: 'birthday', name: 'Reels' },
                     { category: 'birthday', name: 'Customized Albums & Frames' },
-                    { category: 'premier', name: 'Music Videos' }
+                    { category: 'premier', name: 'Music Videos' },
+                    { category: 'fashion', name: 'Editorial Photography' },
+                    { category: 'fashion', name: 'Catalog & Lookbook' },
+                    { category: 'fashion', name: 'Ramp/Event Coverage' },
+                    { category: 'fashion', name: 'Fashion Reels & BTS' }
                 ],
 
                 openCategory(cat) {
