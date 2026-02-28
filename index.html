@@ -14,6 +14,7 @@
         body { background-color: #000; color: #fff; font-family: 'Montserrat', sans-serif; overflow-x: hidden; }
         h1, h2, h3 { font-family: 'Oswald', sans-serif; text-transform: uppercase; }
         
+        /* Optimized Hero Loading */
         .hero-full-width {
             background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.9)), 
                         url('https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?q=80&w=2070&auto=format&fit=crop');
@@ -25,6 +26,9 @@
         }
 
         .glass { background: rgba(15, 15, 15, 0.7); backdrop-filter: blur(15px); border: 1px solid #222; }
+        
+        /* Image Placeholder Effect */
+        .img-placeholder { background-color: #111; position: relative; }
         
         .category-card {
             position: relative;
@@ -76,8 +80,12 @@
         <div class="max-w-[1600px] mx-auto px-6 py-16">
             <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4">
                 <template x-for="(label, cat) in categories" :key="cat">
-                    <div @click="openCategory(cat)" class="category-card group">
-                        <img :src="categoryImages[cat]" class="w-full h-full object-cover" :alt="label">
+                    <div @click="openCategory(cat)" class="category-card group img-placeholder">
+                        <img :src="categoryImages[cat]" 
+                             loading="lazy" 
+                             decoding="async" 
+                             class="w-full h-full object-cover" 
+                             :alt="label">
                         <div class="absolute inset-0 flex flex-col justify-end p-8 bg-gradient-to-t from-black via-black/20 to-transparent">
                             <h3 class="text-xl font-black leading-tight" x-text="label"></h3>
                             <div class="h-1 w-0 group-hover:w-12 bg-red-600 transition-all duration-500 mt-2"></div>
@@ -118,9 +126,11 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-center">
                 <template x-for="(img, index) in showcaseImages[activeCategory] || showcaseImages['default']" :key="index">
-                    <div class="showcase-container aspect-[3/4]">
+                    <div class="showcase-container aspect-[3/4] img-placeholder">
                         <img 
                             :src="img" 
+                            loading="lazy" 
+                            decoding="async"
                             class="showcase-img w-full h-full object-cover"
                             :class="currentPage === 'services' ? 'showcase-active' : ''"
                             :style="`transition-delay: ${index * 150}ms`"
@@ -187,7 +197,7 @@
 
                 categoryImages: {
                     wedding: 'wedding_dronography.webp',
-                    premier: 'corporate_photography.webp(200kb-400kb)',
+                    premier: 'corporate_photography.webp',
                     product: 'product1.webp',
                     corporate: 'corporate_cinematography.webp',
                     birthday: 'birthday2.webp',
@@ -195,25 +205,11 @@
                 },
 
                 showcaseImages: {
-                    wedding: [
-                        'wedding_photography.jpg',
-                        'wedding_photoediting.jpg'
-                    ],
-                    premier: [
-                         'corporate_photoframe.jpg'
-                    ],
-                    product: [
-                         'product2.JPG',
-                        'product3.JPG'
-                    ],
-                    corporate: [
-                         'corporate_photoediting.jpg',
-                        'wedding_cinematography.jpg'
-                    ],
-                    birthday: [
-                        'birthday2.jpg',
-                        'birthday4.jpg'
-                    ],
+                    wedding: ['wedding_photography.jpg', 'wedding_photoediting.jpg'],
+                    premier: ['corporate_photoframe.jpg'],
+                    product: ['product2.JPG', 'product3.JPG'],
+                    corporate: ['corporate_photoediting.jpg', 'wedding_cinematography.jpg'],
+                    birthday: ['birthday2.jpg', 'birthday4.jpg'],
                     fashion: [
                         'https://images.unsplash.com/photo-1469334031218-e382a71b716b?q=80&w=600',
                         'https://images.unsplash.com/photo-1496747611176-843222e1e57c?q=80&w=600',
